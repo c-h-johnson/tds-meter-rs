@@ -1,0 +1,18 @@
+[package]
+name = "tds-meter"
+description = "An embedded-hal driver for TDS Meter (total disolved solids sensor)"
+version = "0.0.0"
+license = "Apache-2.0 OR MIT"
+authors = [
+    "Charles Johnson <charles@charlesjohnson.name>",
+]
+keywords = [
+    "embedded-hal-driver",
+    "tds",
+]
+repository = "https://github.com/c-h-johnson/tds-meter-rs"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
