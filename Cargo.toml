@@ -13,6 +13,7 @@ keywords = [
 repository = "https://github.com/c-h-johnson/tds-meter-rs"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
+embedded-hal = {version = "0.2.7", features=["unproven"]}
+nb="1.0.*"
+num-traits = {version = "0.2.15", default_features = false}
