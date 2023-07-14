@@ -21,50 +21,48 @@ fn median(mut data: [u16; NO_SAMPLES]) -> u16 {
     return data[data.len() / 2];
 }
 
-pub struct TdsMeter<OneShotReader, Adc, Word, PinData, Timer>
+pub struct TdsMeter<OneShotReader, Adc, Word, PinData, Delay>
 where
     OneShotReader: OneShot<Adc, Word, PinData>,
     PinData: Channel<Adc>,
-    Timer: DelayMs<u16>,
+    Delay: DelayMs<u16>,
 {
     adc: OneShotReader,
     adc_range: u16,
     adc_vref: f32,
     pin_data: PinData,
-    timer: Timer,
     _unused: PhantomData<Adc>,
     _unused2: PhantomData<Word>,
+    _unused3: PhantomData<Delay>,
 }
 
-impl<OneShotReader, Adc, Word, PinData, Timer> TdsMeter<OneShotReader, Adc, Word, PinData, Timer>
+impl<OneShotReader, Adc, Word, PinData, Delay> TdsMeter<OneShotReader, Adc, Word, PinData, Delay>
 where
     Word: Into<u16>,
     OneShotReader: OneShot<Adc, Word, PinData>,
     PinData: Channel<Adc>,
-    Timer: DelayMs<u16>,
+    Delay: DelayMs<u16>,
 {
-    pub fn new(
-        adc: OneShotReader,
-        adc_range: u16,
-        adc_vref: f32,
-        pin_data: PinData,
-        timer: Timer,
-    ) -> Self {
+    pub fn new(adc: OneShotReader, adc_range: u16, adc_vref: f32, pin_data: PinData) -> Self {
         Self {
             adc,
             adc_range,
             adc_vref,
             pin_data,
-            timer,
             _unused: PhantomData,
             _unused2: PhantomData,
+            _unused3: PhantomData,
         }
     }
 
     /// Output TDS value in parts per million
     ///
     /// Set temperature to the temperature of the water in °C or 25 if unsure.
-    pub fn sample(&mut self, temperature: f32) -> Result<f32, Error<OneShotReader::Error>> {
+    pub fn measure(
+        &mut self,
+        temperature: f32,
+        delay: &mut Delay,
+    ) -> Result<f32, Error<OneShotReader::Error>> {
         let mut data: [u16; NO_SAMPLES] = [0; NO_SAMPLES];
         for i in 0..NO_SAMPLES {
             loop {
@@ -82,7 +80,7 @@ where
                 };
             }
 
-            self.timer.delay_ms(SAMPLE_INTERVAL_MS);
+            delay.delay_ms(SAMPLE_INTERVAL_MS);
         }
 
         let average_data = median(data);
