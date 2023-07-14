@@ -1,6 +1,7 @@
 # tds-meter-rs
 
-[![](https://badgers.space/badge/crates.io/tds-meter)](https://crates.io/crates/tds-meter)
+[![](https://badgers.space/crates/info/tds-meter)](https://crates.io/crates/tds-meter)
+[![](https://badgers.space/github/open-issues/c-h-johnson/tds-meter-rs)](https://github.com/c-h-johnson/tds-meter-rs/issues)
 
 An embedded-hal driver for TDS Meter (total disolved solids sensor)
 
@@ -15,7 +16,7 @@ Also available under different brands (look for "water conductivity sensor" on e
 
 # Example
 
-```rs
+```rust
 #![no_std]
 #![no_main]
 
